@@ -1,0 +1,7 @@
+<launch>
+	<include file ="$(find turtlebot3_gazebo)/launch/turtlebot3_house.launch"/>
+	<include file ="$(find turtlebot3_gazebo)/launch/turtlebot3_gazebo_rviz.launch"/>
+	<include file ="$(find turtlebot3_teleop)/launch/turtlebot3_teleop_key.launch"/>
+	<node name="RBE460x" pkg="waffle_turtle_bot" type="launch.py" output="screen"/>
+	<node name="image_view" pkg="image_view" type="image_view" respawn="false" output="screen"/>
+</launch>
