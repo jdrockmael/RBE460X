@@ -1,2 +1,0 @@
-
--DCATKIN_DEVEL_PREFIX=/home/jdrockmael/RBE460x/devel -DCMAKE_INSTALL_PREFIX=/home/jdrockmael/RBE460x/install -G Unix Makefiles
