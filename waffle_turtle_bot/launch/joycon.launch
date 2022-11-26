@@ -1,0 +1,15 @@
+<launch>
+    <arg name="use_joycon" default="false" />
+	<include file ="$(find waffle_turtle_bot)/launch/RBE460x.launch"/>
+    <node name="scanIndicate" pkg="scan_interpet" type="scanIndicator.py" output="screen"/>
+
+    <group if="$(arg use_joycon)">
+        <node name="rumble" pkg="joycon" type="rumble.py" output="screen"/>
+        <node name="joyStick" pkg="joycon" type="joyStickReader.py" output="screen"/>
+        <node name="drive" pkg="interface_controller_bot" type="robotDrive.py" output="screen"/>
+    </group>
+
+    <group unless="$(arg use_joycon)">
+        <include file ="$(find turtlebot3_teleop)/launch/turtlebot3_teleop_key.launch"/>
+    </group>
+</launch>

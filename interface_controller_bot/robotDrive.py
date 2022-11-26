@@ -7,8 +7,8 @@ import asyncio
 from geometry_msgs.msg import Twist
 leftStickPosition=0.0 #start the robot not moving
 rightStickPosition=0.0 #start the robot not moving
-maxStraightSpeed = 1.0 #m/s
-maxTurningSpeed=3.0 #rad/s
+maxStraightSpeed = 0.5 #m/s
+maxTurningSpeed=1.0 #rad/s
 toleranceMatchGoStraight=0.1 #how much the sticks must match to count as going straight
 
 def initilize():
@@ -52,8 +52,8 @@ def turning(leftPos,rightPos):
     else:
         differance=valueleft-valueright
     turningSpeed=(differance/1.8)*maxTurningSpeed
-    #if average >= 0:
-        #turningSpeed=turningSpeed*-1
+    if average > 0:
+        turningSpeed=turningSpeed*-1
     
     return turningSpeed,average*-1
 
@@ -83,10 +83,10 @@ def mainCode():
             turningSpeed,percentSpeed=turning(leftStickPosition,rightStickPosition)
             straightSpeed=percentSpeed*maxStraightSpeed
             #rospy.loginfo('turning')
-        #rospy.loginfo('straight')    
-        #rospy.loginfo(straightSpeed)
-        #rospy.loginfo('turning')
-        #rospy.loginfo(turningSpeed)
+        # rospy.loginfo('straight')    
+        # rospy.loginfo(straightSpeed)
+        # rospy.loginfo('turning')
+        # rospy.loginfo(turningSpeed)
         updateBot(straightSpeed,turningSpeed)
         rate.sleep()
 

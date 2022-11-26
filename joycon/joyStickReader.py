@@ -48,13 +48,15 @@ def handler(signum, frame):
 
 def mainCode():
     global leftPublisher, rightPublisher, stop
+    rate = rospy.Rate(30) # 10hz
     leftDevice=getLeftControllerInfo()
     rightDevice=getRightControllerInfo()
     devices = map(InputDevice, (leftDevice, rightDevice))
     devices = {dev.fd: dev for dev in devices}
 
     while not rospy.is_shutdown() and stop != True:
-        r, w, x = select(devices, [], [],.5)
+        rate.sleep()
+        r, w, x = select(devices, [], [],.1)
         for fd in r:
             for event in devices[fd].read():
                 data=event.value/32300
