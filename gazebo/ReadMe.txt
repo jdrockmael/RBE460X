@@ -1,0 +1,1 @@
+Main world is called Maze2_1.world and is located in gazebo_models/ since it references objects from that folder. gazebo-11/ should be included by default, but if not, the folder has the walking person animation
