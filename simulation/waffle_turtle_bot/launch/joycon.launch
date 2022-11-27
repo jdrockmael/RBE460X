@@ -1,15 +1,42 @@
 <launch>
-    <arg name="use_joycon" default="false" />
+    <arg name="case" default="0" />
+    <rosparam file="$(find waffle_turtle_bot)/config/base.yaml" />
 	<include file ="$(find waffle_turtle_bot)/launch/RBE460x.launch"/>
     <node name="scanIndicate" pkg="scan_interpet" type="scanIndicator.py" output="screen"/>
 
-    <group if="$(arg use_joycon)">
+    <group if="$(eval case==1)">
+        <rosparam file="$(find waffle_turtle_bot)/config/neither.yaml" />
+        <node name="joyStick" pkg="joycon" type="joyStickReader.py" output="screen"/>
+        <node name="drive" pkg="interface_controller_bot" type="robotDrive.py" output="screen"/>
+        <node name="display" pkg="user_display" type="basicDisplay.py" output="screen"/>
+    </group>
+
+    <group if="$(eval case==2)">
+        <rosparam file="$(find waffle_turtle_bot)/config/rumbleOnly.yaml" />
         <node name="rumble" pkg="joycon" type="rumble.py" output="screen"/>
         <node name="joyStick" pkg="joycon" type="joyStickReader.py" output="screen"/>
         <node name="drive" pkg="interface_controller_bot" type="robotDrive.py" output="screen"/>
+        <node name="display" pkg="user_display" type="basicDisplay.py" output="screen"/>
     </group>
 
-    <group unless="$(arg use_joycon)">
+    <group if="$(eval case==3)">
+        <rosparam file="$(find waffle_turtle_bot)/config/visualOnly.yaml" />
+        <node name="joyStick" pkg="joycon" type="joyStickReader.py" output="screen"/>
+        <node name="drive" pkg="interface_controller_bot" type="robotDrive.py" output="screen"/>
+        <node name="display" pkg="user_display" type="sensorDisplay.py" output="screen"/>
+    </group>
+
+    <group if="$(eval case==4)">
+        <rosparam file="$(find waffle_turtle_bot)/config/rumbleAndVisual.yaml" />
+        <node name="rumble" pkg="joycon" type="rumble.py" output="screen"/>
+        <node name="joyStick" pkg="joycon" type="joyStickReader.py" output="screen"/>
+        <node name="drive" pkg="interface_controller_bot" type="robotDrive.py" output="screen"/>
+        <node name="display" pkg="user_display" type="sensorDisplay.py" output="screen"/>
+    </group>
+
+    <group if="$(eval case==0)">
+        <rosparam file="$(find waffle_turtle_bot)/config/neither.yaml" />
         <include file ="$(find turtlebot3_teleop)/launch/turtlebot3_teleop_key.launch"/>
+        <node name="display" pkg="user_display" type="sensorDisplay.py" output="screen"/>
     </group>
 </launch>

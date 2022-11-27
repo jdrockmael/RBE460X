@@ -1,0 +1,20 @@
+#SensorDisplay/basicDiplsay
+mathInterval: 4 #sec per queastion
+radiusCircle: 50 #pixels
+offsetCenter: 50 # pixels
+widthSpeedBar: 10 # pixels
+widthSensorBar: 20 #pixels
+
+#robotDrive
+maxStraightSpeed: 0.5 #m/s
+maxTurningSpeed: 1 #rad/s
+toleranceMatchGoStraight: 0.1 #from 0-1 joystick
+
+#scanIndicator
+minDistanseFromBot: 165 #mm
+widthOfScan: 160 #mm
+maxDistanceFromBot: 1000 #mm
+
+#rumble
+rumbleUpdateTime: 500 #ms
+

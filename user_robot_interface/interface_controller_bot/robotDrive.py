@@ -12,12 +12,15 @@ maxTurningSpeed=1.0 #rad/s
 toleranceMatchGoStraight=0.1 #how much the sticks must match to count as going straight
 
 def initilize():
-    global drivePublisher, rate
+    global drivePublisher, rate, maxStraightSpeed, maxTurningSpeed, toleranceMatchGoStraight
     rospy.init_node('driveRobot', anonymous=True)
     rospy.Subscriber("leftStickPos", Float32, updateLeftPos)
     rospy.Subscriber("rightStickPos", Float32, updateRightPos)
     drivePublisher = rospy.Publisher('/cmd_vel', Twist, queue_size=10)
     rate = rospy.Rate(10) # 10hz
+    maxStraightSpeed= rospy.get_param("/maxStraightSpeed")  
+    maxTurningSpeed= rospy.get_param("/maxTurningSpeed")  
+    toleranceMatchGoStraight= rospy.get_param("/toleranceMatchGoStraight")  
 
 def updateLeftPos(data):
     global leftStickPosition

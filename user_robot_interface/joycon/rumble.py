@@ -17,14 +17,14 @@ leftPublisher=None
 rightPublisher=None
 #start all subscribers and publishers while also starting the node
 def initilize():
-    global leftPublisher, rightPublisher
+    global leftPublisher, rightPublisher, rumbleUpdateTime
     # In ROS, nodes are uniquely named. If two nodes with the same
     # name are launched, the previous one is kicked off. The
     # anonymous=True flag means that rospy will choose a unique
     # name for our 'listener' node so that multiple listeners can
     # run simultaneously.
     rospy.init_node('joyconController', anonymous=True)
-
+    rumbleUpdateTime= rospy.get_param("/rumbleUpdateTime") 
     rospy.Subscriber("leftRumbleLevel", Int16, leftlevelSetter)
     rospy.Subscriber("rightRumbleLevel", Int16, rightlevelSetter)
     
@@ -69,12 +69,10 @@ def controllerRumble(controllerInfo,level):
         level =12
     #check if the effect has ever been used before is so just use the old effect
     if controllerInfo.name=='Nintendo Switch Left Joy-Con' and effectIdsLeft[level] == None:
-        print(effectIdsLeft)
         empty =True
     if controllerInfo.name=='Nintendo Switch Right Joy-Con' and effectIdsRight[level] == None:
         empty =True
     if empty == True:
-        print('making new effect')
         if level ==0:
             rumble = ff.Rumble(strong_magnitude=0x0000, weak_magnitude=0x0000)
         elif level ==1:
@@ -113,7 +111,6 @@ def controllerRumble(controllerInfo,level):
             effect_type
         )
         
-        print("Uploading FF effect...")
         effect_id = controllerInfo.upload_effect(effect)
 
         if controllerInfo.name=='Nintendo Switch Left Joy-Con':
@@ -151,13 +148,10 @@ def mainCode():
 
     print(util.list_devices())
     rightControllerInfo=getRightControllerInfo()
-    rospy.loginfo('got left')
     leftControllerInfo=getLeftControllerInfo() 
-    rospy.loginfo('got right')
 
     interval=rumbleUpdateTime/1000
     while not rospy.is_shutdown() and stop != True:
-        rospy.loginfo('updating new rumble')
         controllerRumble(rightControllerInfo,rightLevel)
         controllerRumble(leftControllerInfo,leftLevel)
         time.sleep(interval)

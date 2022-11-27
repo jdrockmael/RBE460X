@@ -66,5 +66,8 @@ for distance in range(colums):
 rospy.init_node('scan_values')
 leftPublisher = rospy.Publisher('leftRumbleLevel', Int16, queue_size=10)
 rightPublisher = rospy.Publisher('rightRumbleLevel', Int16, queue_size=10)
+minDistanseFromBot= rospy.get_param("/minDistanseFromBot")  
+widthOfScan= rospy.get_param("/widthOfScan")  
+maxDistanceFromBot= rospy.get_param("/maxDistanceFromBot")  
 sub = rospy.Subscriber('/scan', LaserScan, callback)
 rospy.spin()
