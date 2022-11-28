@@ -1,7 +1,7 @@
 <launch>
   
 	<include file ="$(find turtlebot3_gazebo)/launch/turtlebot3_empty_world.launch">
-   		<arg name="world_name" value="$(find gazebo)/gazebo_models/Maze2_1.world"/> 
+   		<arg name="world_name" value="$(find RBE460X)/gazebo/gazebo_models/Maze2_1.world"/> 
   </include>
 	<include file ="$(find turtlebot3_gazebo)/launch/turtlebot3_gazebo_rviz.launch"/>
 	<!--<include file ="$(find turtlebot3_teleop)/launch/turtlebot3_teleop_key.launch"/>-->
