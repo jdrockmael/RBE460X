@@ -1,6 +1,6 @@
 <launch>
   
-	<include file ="$(find turtlebot3_gazebo)/launch/turtlebot3_empty_world.launch"/>
+	<include file ="$(find turtlebot3_gazebo)/launch/turtlebot3_empty_world.launch">
    		<arg name="sdf_robot_file" value="$(find gazebo)/gazebo_models/Race_Track/model.sdf"/> 
   	</include>
 	<include file ="$(find turtlebot3_gazebo)/launch/turtlebot3_gazebo_rviz.launch"/>
