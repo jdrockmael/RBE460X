@@ -1,9 +1,19 @@
 <launch>
     <arg name="case" default="0" />
+    <arg name="isExperiment" default="0" />
     <rosparam file="$(find waffle_turtle_bot)/config/base.yaml" />
 	<include file ="$(find waffle_turtle_bot)/launch/RBE460x.launch"/>
     <node name="scanIndicate" pkg="scan_interpet" type="scanIndicator.py" output="screen"/>
 
+    <group if="$(eval isExperiment==0)">
+        <rosparam file="$(find waffle_turtle_bot)/config/disableMath.yaml" />
+        <include file ="$(find waffle_turtle_bot)/launch/testMap.launch"/>
+    </group>
+    <group if="$(eval isExperiment==1)">
+        <rosparam file="$(find waffle_turtle_bot)/config/enableMath.yaml" />
+        <include file ="$(find waffle_turtle_bot)/launch/experiment.launch"/>
+    </group>
+    
     <group if="$(eval case==1)">
         <rosparam file="$(find waffle_turtle_bot)/config/neither.yaml" />
         <node name="joyStick" pkg="joycon" type="joyStickReader.py" output="screen"/>

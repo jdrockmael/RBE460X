@@ -65,7 +65,7 @@ def updateRightSensor(msg):
     rightSensor= msg.data
 def callback(data):
     global speed, turning, maxSpeed, maxTurning, oldTime, mathInterval, firstVar, secondVar, thirdVar, queastionIndex, leftSensor, rightSensor
-    global offsetCenter, widthSpeedBar, widthBar, radiusCircle
+    global offsetCenter, widthSpeedBar, widthBar, radiusCircle, enableMath
     # Used to convert between ROS and OpenCV images
     br = CvBridge()
 
@@ -94,25 +94,26 @@ def callback(data):
     cv2.line(current_frame, ((int(w/2)+(offsetCenter*2),h-splitHeight-int(splitHeight/2))), (int(w/2)+(offsetCenter*2)+x,h-splitHeight-int(splitHeight/2)-y), red, 2) 
 
     # math queastion
-    # font
-    font = cv2.FONT_HERSHEY_SIMPLEX
-    # org
-    org = (50, h-splitHeight)
-    # fontScale
-    fontScale = 3
-    # Blue color in BGR
-    color = (255, 0, 255)
-    # Line thickness of 2 px
-    thickness = 2
-    # add queastion to display
-    queastion=firstVar[queastionIndex]+ secondVar[queastionIndex] +thirdVar[queastionIndex]+'=?'
-    # Using cv2.putText() method
-    cv2.putText(current_frame, queastion, org, font, fontScale, color, thickness, cv2.LINE_AA)
-    
-    seconds = rospy.get_time()
-    if seconds-oldTime > mathInterval or oldTime == 0:
-        oldTime = seconds
-        queastionIndex+=1
+    if enableMath == 1:
+        # font
+        font = cv2.FONT_HERSHEY_SIMPLEX
+        # org
+        org = (50, h-splitHeight)
+        # fontScale
+        fontScale = 3
+        # Blue color in BGR
+        color = (255, 0, 255)
+        # Line thickness of 2 px
+        thickness = 2
+        # add queastion to display
+        queastion=firstVar[queastionIndex]+ secondVar[queastionIndex] +thirdVar[queastionIndex]+'=?'
+        # Using cv2.putText() method
+        cv2.putText(current_frame, queastion, org, font, fontScale, color, thickness, cv2.LINE_AA)
+        
+        seconds = rospy.get_time()
+        if seconds-oldTime > mathInterval or oldTime == 0:
+            oldTime = seconds
+            queastionIndex+=1
 
     splitWidth=int(w/70)
     widthBar=20
@@ -145,7 +146,7 @@ def callback(data):
     cv2.waitKey(1)
       
 def receive_message():
-    global mathInterval, offsetCenter, widthSpeedBar, widthBar, radiusCircle, maxSpeed, maxTurning
+    global mathInterval, offsetCenter, widthSpeedBar, widthBar, radiusCircle, maxSpeed, maxTurning, enableMath
     mathInterval= rospy.get_param("/mathInterval") 
     radiusCircle= rospy.get_param("/radiusCircle") 
     offsetCenter= rospy.get_param("/offsetCenter") 
@@ -154,6 +155,7 @@ def receive_message():
     maxSpeed= rospy.get_param("/maxStraightSpeed") 
     maxSpeed=maxSpeed*.9
     maxTurning= rospy.get_param("/maxTurningSpeed") 
+    enableMath= rospy.get_param("/enableMath") 
     getCSV()
     # Tells rospy the name of the node.
     # Anonymous = True makes sure the node has a unique name. Random
