@@ -2,7 +2,6 @@
     <arg name="case" default="0" />
     <arg name="isExperiment" default="0" />
     <rosparam file="$(find waffle_turtle_bot)/config/base.yaml" />
-	<include file ="$(find waffle_turtle_bot)/launch/RBE460x.launch"/>
     <node name="scanIndicate" pkg="scan_interpet" type="scanIndicator.py" output="screen"/>
 
     <group if="$(eval isExperiment==0)">
